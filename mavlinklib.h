@@ -1,6 +1,8 @@
 // mavlinklib.h
 
 #pragma once
+
+#include <iostream>
 #include "mavlink/ardupilotmega/mavlink.h"
 
 using namespace System;
@@ -70,6 +72,10 @@ namespace mavlinklib {
 				for (int ii = 0; ii < len; ii++)
 				{
 					buff[ii] = t_buff[ii];
+				}
+				if (mav_status[channel].msg_received != MAVLINK_FRAMING_OK)
+				{
+					std::cerr << "Framing error in returned message" << std::endl;
 				}
 			}
 			else {
