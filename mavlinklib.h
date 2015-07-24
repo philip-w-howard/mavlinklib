@@ -7,6 +7,8 @@
 
 using namespace System;
 
+// identify myself as component MAV_COMP_ID_UDP_BRIDGE or MAV_COMP_ID_UART_BRIDGE
+
 namespace mavlinklib {
 
 	public ref class MavlinkProcessor
@@ -27,7 +29,7 @@ namespace mavlinklib {
 			}
 		}
 
-		static array<uint8_t>^ create_heartbeat(uint8_t sysid, uint8_t compid)
+		static array<uint8_t>^ create_heartbeat()
 		{
 			array<uint8_t>^ buff;
 			uint8_t t_buff[BUFFER_SIZE];
@@ -44,7 +46,7 @@ namespace mavlinklib {
 			mavlink_message_t msg;
 
 			// Pack the message
-			mavlink_msg_heartbeat_pack(sysid, compid, &msg, system_type, autopilot_type, system_mode, custom_mode, system_state);
+			mavlink_msg_heartbeat_pack(MY_SYSID, MY_COMPID, &msg, system_type, autopilot_type, system_mode, custom_mode, system_state);
 			len = mavlink_msg_to_send_buffer(t_buff, &msg);
 
 			buff = gcnew array< uint8_t >(len);
@@ -87,6 +89,9 @@ namespace mavlinklib {
 	protected:
 		static mavlink_message_t *mav_msg = nullptr;
 		static mavlink_status_t  *mav_status = nullptr;
+		static int MY_COMPID = MAV_COMP_ID_UART_BRIDGE;
+		static int MY_SYSID = 254;
+
 
 	};
 }
